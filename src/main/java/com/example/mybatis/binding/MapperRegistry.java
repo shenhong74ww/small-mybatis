@@ -1,6 +1,7 @@
 package com.example.mybatis.binding;
 
 import cn.hutool.core.lang.ClassScanner;
+import com.example.mybatis.session.Configuration;
 import com.example.mybatis.session.SqlSession;
 
 import java.util.HashMap;
@@ -16,6 +17,13 @@ import java.util.Set;
  * @date 2022-07-21 16:38
  */
 public class MapperRegistry {
+
+    private Configuration config;
+
+    public MapperRegistry(Configuration config) {
+        this.config = config;
+    }
+
 
     private final Map<Class<?>, MapperProxyFactory<?>> knownMappers = new HashMap<>();
 

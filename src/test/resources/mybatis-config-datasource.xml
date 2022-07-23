@@ -1,0 +1,7 @@
+<configuration>
+
+    <mappers>
+        <mapper resource="mapper/User_Mapper.xml"/>
+    </mappers>
+
+</configuration>
