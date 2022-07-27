@@ -1,6 +1,6 @@
 <mapper namespace="com.example.mybatis.dao.IUserDao">
 
-    <select id="queryUserInfoById" parameterType="java.lang.Long" resultType="cn.bugstack.mybatis.test.po.User">
+    <select id="queryUserInfoById" parameterType="java.lang.Long" resultType="com.example.mybatis.po.User">
         SELECT id, userId, userHead, createTime
         FROM user
         where id = #{id}

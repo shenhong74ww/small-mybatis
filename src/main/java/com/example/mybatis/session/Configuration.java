@@ -1,7 +1,11 @@
 package com.example.mybatis.session;
 
 import com.example.mybatis.binding.MapperRegistry;
+import com.example.mybatis.datasource.druid.DruidDataSourceFactory;
+import com.example.mybatis.mapping.Environment;
 import com.example.mybatis.mapping.MappedStatement;
+import com.example.mybatis.transaction.jdbc.JdbcTransactionFactory;
+import com.example.mybatis.type.TypeAliasRegistry;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,10 +19,19 @@ import java.util.Map;
  */
 public class Configuration {
 
+    protected Environment environment;
+
     /**
      * 映射注册机
      */
     protected MapperRegistry mapperRegistry = new MapperRegistry(this);
+
+    protected final TypeAliasRegistry typeAliasRegistry = new TypeAliasRegistry();
+
+    public Configuration() {
+        typeAliasRegistry.registerAlias("JDBC", JdbcTransactionFactory.class);
+        typeAliasRegistry.registerAlias("DRUID", DruidDataSourceFactory.class);
+    }
 
     /**
      * 映射的语句，存在Map里
@@ -49,4 +62,15 @@ public class Configuration {
         return mappedStatements.get(id);
     }
 
+    public TypeAliasRegistry getTypeAliasRegistry() {
+        return typeAliasRegistry;
+    }
+
+    public Environment getEnvironment() {
+        return environment;
+    }
+
+    public void setEnvironment(Environment environment) {
+        this.environment = environment;
+    }
 }

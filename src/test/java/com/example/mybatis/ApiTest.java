@@ -1,10 +1,14 @@
 package com.example.mybatis;
 
 
+import com.alibaba.fastjson.JSON;
 import com.example.mybatis.binding.MapperProxyFactory;
 import com.example.mybatis.binding.MapperRegistry;
+import com.example.mybatis.builder.xml.XMLConfigBuilder;
 import com.example.mybatis.dao.IUserDao;
 import com.example.mybatis.io.Resources;
+import com.example.mybatis.po.User;
+import com.example.mybatis.session.Configuration;
 import com.example.mybatis.session.SqlSession;
 import com.example.mybatis.session.SqlSessionFactory;
 import com.example.mybatis.session.SqlSessionFactoryBuilder;
@@ -32,27 +36,32 @@ public class ApiTest {
     private Logger logger = LoggerFactory.getLogger(ApiTest.class);
 
     @Test
-    public void test_MapperProxyFactory() throws IOException {
+    public void test_SqlSessionFactory() throws IOException {
         // 1. 从SqlSessionFactory中获取SqlSession
-        Reader reader = Resources.getResourceAsReader("mybatis-config-datasource.xml");
-        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(Resources.getResourceAsReader("mybatis-config-datasource.xml"));
         SqlSession sqlSession = sqlSessionFactory.openSession();
 
         // 2. 获取映射器对象
         IUserDao userDao = sqlSession.getMapper(IUserDao.class);
 
         // 3. 测试验证
-        String res = userDao.queryUserInfoById("10001");
-        logger.info("测试结果：{}", res);
+        User user = userDao.queryUserInfoById(1L);
+        logger.info("测试结果：{}", JSON.toJSONString(user));
     }
 
     @Test
-    public void test_proxy_class() {
-        IUserDao userDao = (IUserDao) Proxy.newProxyInstance(
-                Thread.currentThread().getContextClassLoader(),
-                new Class[]{IUserDao.class}, (proxy, method, args) -> "你被代理了！");
-        String result = userDao.queryUserName("10001");
-        System.out.println("测试结果：" + result);
-    }
+    public void test_selectOne() throws IOException {
+        // 解析 XML
+        Reader reader = Resources.getResourceAsReader("mybatis-config-datasource.xml");
+        XMLConfigBuilder xmlConfigBuilder = new XMLConfigBuilder(reader);
+        Configuration configuration = xmlConfigBuilder.parse();
 
+        // 获取 DefaultSqlSession
+        SqlSession sqlSession = new DefaultSqlSession(configuration);
+
+        // 执行查询：默认是一个集合参数
+        Object[] req = {1L};
+        Object res = sqlSession.selectOne("com.example.mybatis.dao.IUserDao.queryUserInfoById", req);
+        logger.info("测试结果：{}", JSON.toJSONString(res));
+    }
 }

@@ -1,5 +1,17 @@
 <configuration>
 
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="DRUID">
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://cpe6gb150mj9woafzny3h2xscqr4dkiv.mysql.qingcloud.link:3306/lottery?useUnicode=true&amp;useSSL=false"/>
+                <property name="username" value="chris"/>
+                <property name="password" value="Abcd1234_"/>
+            </dataSource>
+        </environment>
+    </environments>
+
     <mappers>
         <mapper resource="mapper/User_Mapper.xml"/>
     </mappers>

@@ -1,5 +1,7 @@
 package com.example.mybatis.dao;
 
+import com.example.mybatis.po.User;
+
 /**
  * @author 小傅哥，微信：fustack
  * @description
@@ -9,9 +11,5 @@ package com.example.mybatis.dao;
  */
 public interface IUserDao {
 
-    String queryUserName(String uId);
-
-    Integer queryUserAge(String uId);
-
-    String queryUserInfoById(String uId);
+    User queryUserInfoById(Long uId);
 }

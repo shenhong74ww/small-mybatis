@@ -1,6 +1,7 @@
 package com.example.mybatis.builder;
 
 import com.example.mybatis.session.Configuration;
+import com.example.mybatis.type.TypeAliasRegistry;
 
 /**
  * @author 小傅哥，微信：fustack
@@ -12,9 +13,11 @@ import com.example.mybatis.session.Configuration;
 public abstract class BaseBuilder {
 
     protected final Configuration configuration;
+    protected final TypeAliasRegistry typeAliasRegistry;
 
     public BaseBuilder(Configuration configuration) {
         this.configuration = configuration;
+        this.typeAliasRegistry = this.configuration.getTypeAliasRegistry();
     }
 
     public Configuration getConfiguration() {
